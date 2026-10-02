@@ -1,0 +1,2 @@
+import type { Language } from '../data/site'
+export default function NotFoundPage({language}:{language:Language}){return <section className="section-pad"><div className="container-shell text-center"><div className="text-7xl font-black text-hospital-teal/20">404</div><h1 className="mt-4 text-3xl font-black text-hospital-navy">{language==='en'?'Page not found':'पृष्ठ सापडले नाही'}</h1><a href="/" className="btn-primary mt-6">{language==='en'?'Back to home':'मुख्यपृष्ठ'}</a></div></section>}

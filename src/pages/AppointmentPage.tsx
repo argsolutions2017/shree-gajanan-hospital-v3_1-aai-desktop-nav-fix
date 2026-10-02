@@ -1,0 +1,8 @@
+import AppointmentForm from '../components/AppointmentForm'
+import PageHero from '../components/PageHero'
+import WhatsAppAssistant from '../components/WhatsAppAssistant'
+import { type Language } from '../data/site'
+
+export default function AppointmentPage({ language }: { language: Language }) {
+  return <><PageHero eyebrow={language === 'en' ? 'Appointments' : 'अपॉइंटमेंट'} title={language === 'en' ? 'Request an appointment through WhatsApp.' : 'WhatsApp द्वारे अपॉइंटमेंट विनंती करा.'} description={language === 'en' ? 'Choose your doctor, preferred date and time. The hospital team will review the request and confirm availability.' : 'डॉक्टर, पसंतीची तारीख व वेळ निवडा. हॉस्पिटल टीम विनंती पाहून उपलब्धता निश्चित करेल.'}/><section className="section-pad bg-white"><div className="container-shell grid gap-8 lg:grid-cols-[1.1fr_.9fr]"><AppointmentForm language={language}/><div><WhatsAppAssistant language={language} embedded/><div className="mt-5 rounded-3xl bg-hospital-bg p-5 text-sm leading-7 text-hospital-muted"><strong className="text-hospital-navy">{language === 'en' ? 'Automatic reply setup:' : 'ऑटो रिप्लाय सेटअप:'}</strong> {language === 'en' ? 'The website prepares structured WhatsApp messages. WhatsApp Business Greeting/Away Messages can acknowledge new enquiries automatically; appointment confirmation should remain with hospital staff unless the official WhatsApp Business Platform is configured.' : 'वेबसाइट संरचित WhatsApp संदेश तयार करते. WhatsApp Business Greeting/Away Messages नवीन चौकशीला ऑटो-अॅक्नॉलेज करू शकतात; अधिकृत WhatsApp Business Platform नसल्यास अपॉइंटमेंट पुष्टी हॉस्पिटल स्टाफनेच करावी.'}</div></div></div></section></>
+}

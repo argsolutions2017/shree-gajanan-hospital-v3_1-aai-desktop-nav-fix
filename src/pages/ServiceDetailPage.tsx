@@ -1,0 +1,20 @@
+import AppointmentForm from '../components/AppointmentForm'
+import Faq from '../components/Faq'
+import Icon from '../components/Icon'
+import PageHero from '../components/PageHero'
+import ServiceCard from '../components/ServiceCard'
+import { services, type Language, type Service } from '../data/site'
+
+export default function ServiceDetailPage({ service, language }: { service: Service; language: Language }) {
+  const related = services.filter(s => s.slug !== service.slug).slice(0,3)
+  return <>
+    <PageHero eyebrow={`${service.category[language]} • Warud`} title={service.title[language]} description={service.intro[language]}>
+      <a href="/appointment" className="btn-primary"><Icon name="calendar" className="mr-2 h-5 w-5"/>{language === 'en' ? 'Request Appointment' : 'अपॉइंटमेंट विनंती'}</a>
+      <a href="/contact" className="btn-secondary">{language === 'en' ? 'Contact Hospital' : 'हॉस्पिटल संपर्क'}</a>
+    </PageHero>
+    <section className="section-pad bg-white"><div className="container-shell grid gap-10 lg:grid-cols-[1.1fr_.9fr]"><div><div className="eyebrow">{language === 'en' ? 'Care includes' : 'सेवेमध्ये'}</div><h2 className="section-title">{language === 'en' ? 'What this service can help with' : 'ही सेवा कशासाठी उपयुक्त आहे'}</h2><div className="mt-7 grid gap-4">{service.bullets.map(b => <div key={b.en} className="flex gap-4 rounded-2xl border border-hospital-line bg-hospital-bg p-5"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-hospital-teal shadow-sm"><Icon name="check" className="h-4 w-4"/></span><div className="font-semibold leading-7 text-hospital-ink">{b[language]}</div></div>)}</div></div><aside className="rounded-[32px] border border-hospital-pink/15 bg-hospital-pinkSoft p-6 md:p-7"><div className="flex items-center gap-3"><span className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-hospital-pink"><Icon name="emergency" className="h-6 w-6"/></span><h3 className="text-xl font-black text-hospital-navy">{language === 'en' ? 'When to seek medical attention' : 'कधी वैद्यकीय मदत घ्यावी'}</h3></div><div className="mt-5 grid gap-3">{service.whenToSeek.map(i => <div key={i.en} className="flex gap-3 text-sm leading-7 text-hospital-ink"><span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-hospital-pink"/>{i[language]}</div>)}</div><p className="mt-5 border-t border-hospital-pink/15 pt-4 text-xs leading-6 text-hospital-muted">{language === 'en' ? 'This page provides general service information and does not diagnose or replace an in-person medical assessment.' : 'हे पृष्ठ सामान्य सेवा माहिती देते; निदान किंवा प्रत्यक्ष वैद्यकीय तपासणीची जागा घेत नाही.'}</p></aside></div></section>
+    <section className="section-pad bg-hospital-bg"><div className="container-shell grid gap-10 lg:grid-cols-[.8fr_1.2fr]"><div><div className="eyebrow">FAQ</div><h2 className="section-title">{language === 'en' ? 'Common questions' : 'सामान्य प्रश्न'}</h2></div><Faq items={service.faq} language={language}/></div></section>
+    <section className="section-pad bg-white"><div className="container-shell grid gap-10 lg:grid-cols-2"><div><div className="eyebrow">{language === 'en' ? 'Book a visit' : 'भेट बुक करा'}</div><h2 className="section-title">{language === 'en' ? 'Send an appointment request on WhatsApp.' : 'WhatsApp वर अपॉइंटमेंट विनंती पाठवा.'}</h2><p className="mt-4 leading-7 text-hospital-muted">{language === 'en' ? `Select the doctor and preferred time. Mention “${service.title.en}” as the visit type if appropriate.` : 'डॉक्टर व पसंतीची वेळ निवडा. योग्य असल्यास भेटीच्या कारणात संबंधित सेवा निवडा.'}</p></div><AppointmentForm language={language}/></div></section>
+    <section className="section-pad bg-hospital-bg"><div className="container-shell"><div className="eyebrow">{language === 'en' ? 'Related services' : 'संबंधित सेवा'}</div><div className="mt-6 grid gap-5 md:grid-cols-3">{related.map(s => <ServiceCard key={s.slug} service={s} language={language}/>)}</div></div></section>
+  </>
+}
