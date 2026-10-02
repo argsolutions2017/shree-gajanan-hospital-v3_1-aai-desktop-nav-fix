@@ -9,7 +9,6 @@ export default function DoctorCard({ doctor, language, compact = false }: { doct
         <div className="relative min-h-[310px] overflow-hidden bg-hospital-bg">
           <img src={doctor.image} alt={doctor.name} className="absolute inset-0 h-full w-full object-cover object-top" loading="lazy" width="680" height="760" />
           <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-hospital-navy/65 to-transparent" />
-          <div className="absolute bottom-4 left-4 rounded-full bg-white/95 px-3 py-1.5 text-xs font-extrabold text-hospital-teal shadow-sm">Reg. No. {doctor.registration}</div>
         </div>
         <div className="p-6 md:p-7">
           <div className="text-xs font-black uppercase tracking-[.16em] text-hospital-pink">{doctor.specialty[language]}</div>

@@ -7,3 +7,9 @@
 - Made the Services mega-menu width responsive so it cannot overflow the viewport.
 
 This fixes cases where a normal laptop browser, browser zoom, or side panel reduced the CSS viewport below 1280px and caused the production site to show the hamburger menu.
+
+
+## V3.2 – Doctor cards + WhatsApp panel fixes
+- Removed registration-number overlays from doctor images.
+- Improved floating WhatsApp quick-help panel to stay within the viewport with a controlled max height.
+- Added outside-click and Escape-key close behavior for the WhatsApp quick-help panel.

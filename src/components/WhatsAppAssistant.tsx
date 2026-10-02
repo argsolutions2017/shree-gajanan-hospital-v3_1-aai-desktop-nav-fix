@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Icon from './Icon'
 import { HOSPITAL_MAPS_URL, HOSPITAL_PHONE_DISPLAY, type Language, whatsappUrl } from '../data/site'
 
@@ -11,9 +11,39 @@ const intents = [
 
 export default function WhatsAppAssistant({ language, embedded = false }: { language: Language; embedded?: boolean }) {
   const [open, setOpen] = useState(embedded)
-  const makeMessage = (key: string, label: string) => `GAJANAN HOSPITAL WEBSITE • ${key}\n\nHello, I need help with: ${label}.\n\nPlease assist me.\nWebsite: https://gajananhospitalwarud.com`
+  const panelRef = useRef<HTMLDivElement | null>(null)
+  const makeMessage = (key: string, label: string) => `GAJANAN HOSPITAL WEBSITE • ${key}
 
-  const panel = <div className={`${embedded ? 'card' : 'fixed bottom-24 right-5 z-50 w-[min(92vw,360px)] shadow-soft'} overflow-hidden rounded-3xl border border-hospital-line bg-white`}>
+Hello, I need help with: ${label}.
+
+Please assist me.
+Website: https://gajananhospitalwarud.com`
+
+  useEffect(() => {
+    if (embedded || !open) return
+
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      if (!panelRef.current) return
+      const target = event.target as Node | null
+      if (target && !panelRef.current.contains(target)) setOpen(false)
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpen(false)
+    }
+
+    document.addEventListener('mousedown', handlePointerDown)
+    document.addEventListener('touchstart', handlePointerDown)
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown)
+      document.removeEventListener('touchstart', handlePointerDown)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [embedded, open])
+
+  const panel = <div ref={panelRef} className={`${embedded ? 'card' : 'fixed bottom-24 right-5 z-50 w-[min(92vw,360px)] max-h-[min(72vh,560px)] overflow-y-auto shadow-soft'} overflow-hidden rounded-3xl border border-hospital-line bg-white`}>
     <div className="bg-hospital-navy p-5 text-white">
       <div className="flex items-start justify-between gap-4">
         <div><div className="text-xs font-extrabold uppercase tracking-[.16em] text-hospital-tealSoft">WhatsApp Quick Help</div><div className="mt-1 text-xl font-black">{language === 'en' ? 'How can we help?' : 'आम्ही कशी मदत करू?'}</div></div>
@@ -29,5 +59,5 @@ export default function WhatsAppAssistant({ language, embedded = false }: { lang
   </div>
 
   if (embedded) return panel
-  return <>{open && panel}<button onClick={() => setOpen(!open)} className="fixed bottom-24 right-5 z-40 hidden h-14 items-center gap-2 rounded-full bg-[#25D366] px-5 font-black text-white shadow-soft transition hover:-translate-y-1 md:flex" aria-label="Open WhatsApp quick help"><Icon name="message" className="h-5 w-5" /> WhatsApp</button></>
+  return <>{open && <button type="button" aria-label="Close WhatsApp quick help" className="fixed inset-0 z-40 cursor-default bg-transparent" onClick={() => setOpen(false)} />} {open && panel}<button onClick={() => setOpen(!open)} className="fixed bottom-24 right-5 z-[60] hidden h-14 items-center gap-2 rounded-full bg-[#25D366] px-5 font-black text-white shadow-soft transition hover:-translate-y-1 md:flex" aria-label="Open WhatsApp quick help"><Icon name="message" className="h-5 w-5" /> WhatsApp</button></>
 }
